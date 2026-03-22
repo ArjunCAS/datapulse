@@ -1,0 +1,137 @@
+<mat-toolbar color="primary">
+  <mat-icon class="toolbar-icon">receipt_long</mat-icon>
+  <span class="toolbar-title">Transactions</span>
+  <span class="toolbar-spacer"></span>
+  <button mat-button routerLink="/dashboard">
+    <mat-icon>dashboard</mat-icon> Dashboard
+  </button>
+  <span class="toolbar-divider"></span>
+  <span class="toolbar-user">{{ auth.currentUser()?.username }}</span>
+  <button mat-icon-button (click)="auth.logout()" matTooltip="Logout">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="page-container">
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <div class="filter-row">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Search product</mat-label>
+        <input matInput [(ngModel)]="filters.search" (keyup.enter)="applyFilters()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="filters.product__category">
+          <mat-option [value]="undefined">All</mat-option>
+          <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Region</mat-label>
+        <mat-select [(ngModel)]="filters.region">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let r of regions.slice(1)" [value]="r">{{ r | titlecase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Date From</mat-label>
+        <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="dateFrom">
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Date To</mat-label>
+        <input matInput [matDatepicker]="pickerTo" [(ngModel)]="dateTo">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-actions">
+      <button mat-flat-button color="primary" (click)="applyFilters()">
+        <mat-icon>filter_list</mat-icon> Apply
+      </button>
+      <button mat-stroked-button (click)="clearFilters()">
+        <mat-icon>clear</mat-icon> Clear
+      </button>
+      <span class="spacer"></span>
+      <button mat-flat-button color="accent" (click)="openDialog(null)">
+        <mat-icon>add</mat-icon> Add Transaction
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div *ngIf="loading" class="loading-overlay">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="transactions">
+      <ng-container matColumnDef="sale_date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let row">{{ row.sale_date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef>Product</th>
+        <td mat-cell *matCellDef="let row">{{ row.product_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let row">{{ row.category_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="region">
+        <th mat-header-cell *matHeaderCellDef>Region</th>
+        <td mat-cell *matCellDef="let row">{{ row.region | titlecase }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let row">{{ row.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="unit_price">
+        <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+        <td mat-cell *matCellDef="let row">{{ row.unit_price | currency:'USD':'symbol':'1.2-2' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="total_amount">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let row"><strong>{{ row.total_amount | currency:'USD':'symbol':'1.2-2' }}</strong></td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="openDialog(row)" matTooltip="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="delete(row)" matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalCount"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+
+</div>

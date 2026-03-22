@@ -1,0 +1,21 @@
+.toolbar-icon {
+  margin-right: 10px;
+}
+
+.toolbar-spacer { flex: 1; }
+.toolbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.3); margin: 0 12px; }
+.toolbar-user { font-size: 13px; opacity: 0.8; margin-right: 8px; }
+
+.table-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}

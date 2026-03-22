@@ -1,0 +1,48 @@
+.toolbar-icon { margin-right: 10px; }
+.toolbar-spacer { flex: 1; }
+.toolbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.3); margin: 0 12px; }
+.toolbar-user { font-size: 13px; opacity: 0.8; margin-right: 8px; }
+
+.filter-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 160px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .spacer { flex: 1; }
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-overlay {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+table { width: 100%; }
