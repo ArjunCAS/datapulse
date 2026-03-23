@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,7 +65,7 @@ DATABASES = {
         'NAME': 'datapulse',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'),
         'PORT': '5432',
     }
 }
