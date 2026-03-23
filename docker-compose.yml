@@ -12,6 +12,7 @@ services:
     build: .
     depends_on:
       - db
+    restart: on-failure
     environment:
       - DJANGO_DB_HOST=db
     volumes:
