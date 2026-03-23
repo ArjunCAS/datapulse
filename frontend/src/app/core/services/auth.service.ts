@@ -20,7 +20,7 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:8000/api/auth';
+  private readonly API = '/api/auth';
   currentUser = signal<User | null>(null);
 
   constructor(private http: HttpClient, private router: Router) {
